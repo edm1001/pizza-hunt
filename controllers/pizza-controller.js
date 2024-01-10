@@ -1,4 +1,4 @@
-const req = require('express/lib/request');
+// const req = require('express/lib/request');
 const { Pizza } = require('../models');
 
 const pizzaController = {
@@ -15,7 +15,7 @@ const pizzaController = {
         .then(dbPizzaData => res.json(dbPizzaData))
         .catch(err => {
             console.log(err);
-            res.status(400).json(err);
+            res.sendStatus(400)
           });
     },
   
@@ -27,25 +27,19 @@ getPizzaById({ params }, res) {
         select: '-__v'
       })
       .select('-__v')
-      .then(dbPizzaData => {
-        if (!dbPizzaData) {
-          res.status(404).json({ message: 'No pizza found with this id!' });
-          return;
-        }
-        res.json(dbPizzaData);
-      })
+      .then(dbPizzaData => res.json(dbPizzaData))
       .catch(err => {
         console.log(err);
-        res.status(400).json(err);
+        res.sendStatus(400)
       });
   },
 
     //create a piiza
-    createPizza({body}, res){
-        Pizza.create(body)
-        .then(dbPizzaData => res.json(dbPizzaData))
-        .catch(err => res.status(400).json(err));
-    },
+  createPizza({body}, res){
+      Pizza.create(body)
+      .then(dbPizzaData => res.json(dbPizzaData))
+      .catch(err => res.status(400).json(err));
+  },
 
     // update pizza by id
  updatePizza({ params, body }, res) {
